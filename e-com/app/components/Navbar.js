@@ -1,7 +1,13 @@
+"use client"
+
 import Link from "next/link";
 import {ShoppingCart, Heart, User, Search, Menu, SearchAlert} from 'lucide-react'; // Using lucide-react for icons
+import { useSelector } from "react-redux";
 
 export default function Navbar(){
+
+    const cartQuantity = useSelector((state) => state.cart.totalQuantity)
+
     return (
         <nav className="border-b bg-white sticky top-0 z-50">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -33,7 +39,7 @@ export default function Navbar(){
                     <Link href="/cart" className="relative">
                         <ShoppingCart className="w-5 h-5 text-gray-600" />
                         <span className="absolute -top-2 -right-2 bg-orange-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
-                        0
+                        {cartQuantity}
                         </span>
                     </Link>
                     <Menu className="md:hidden w-6 h-6" />
