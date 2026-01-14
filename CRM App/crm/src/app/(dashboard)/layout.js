@@ -21,7 +21,7 @@ export default function DashboardLayout({children}){
     if(!isLoaded){return <div className="h-screen flex items-center justify-center">Loading</div>}
 
     return (
-        <div className="flex h-screen bg-gray-50">
+        <div className="flex h-screen bg-gray-50 overflow-hidden">
 
             {/* 2. Fixed Sidebar */}
             <Sidebar />

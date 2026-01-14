@@ -29,10 +29,11 @@ export default function LoginPage(){
             localStorage.setItem('name', response.name);
             localStorage.setItem('userType', response.userType);
             localStorage.setItem('userId', response.userId);
-
+            console.log("Backend Response", response)
             //2. Redirect based on role
-            const role = response.userType.toLowerCase();
-            router.push(`/${role}`);
+            const role = response.userType?.toLowerCase();
+            console.log("Redirecting to:", `/${role}`);
+            if(role) router.push(`/${role}`);
 
         }catch(err){
             setError(err.message);
