@@ -43,7 +43,7 @@ export default function Sidebar(){
                             key={link.path}
                             href={link.path}
                             className={`block p-3 mb-2 rounded transition ${
-                                pathname === link.path ? 'bg-blue-600':'hover:bg-slate-800'
+                                pathname === link.path ? 'bg-blue-600':'hover:bg-gray-400'
                             } `}
                         >
                             {link.name}
