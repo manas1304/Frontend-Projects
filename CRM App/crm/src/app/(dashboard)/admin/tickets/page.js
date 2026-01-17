@@ -62,7 +62,7 @@ export default function AdminTickets() {
                   className="border rounded p-1 text-sm"
                 >
                   <option>Unassigned</option>
-                  {/* You would map your engineers here later */}
+                  {/* We would map your engineers here later */}
                   <option>Eng 1</option>
                   <option>Eng 2</option>
                 </select>
