@@ -21,6 +21,22 @@ export default function ManageUsers() {
     fetchUsers();
   }, []); // Empty dependency array means runs once on mounting phase
 
+  /**Function to delete the user*/
+  async function deleteUser(userId){
+    if(!window.confirm("Are you sure you want to delete the user? This action can't be undone.")) return;
+
+    try{
+      await apiRequest(`/users/${userId}`, {method: 'DELETE'});
+
+      // Update the local state to remove the user from the UI completely.
+      setUsers(users.filter(u => u.userId !== userId));
+      alert("User Successfully deleted")
+    }catch(err){
+      console.log("Failed to delete the user" + err.message);
+    }
+  }
+
+
   async function handleStatusChange(userId, newStatus){
     try{
         await apiRequest(`/users/${userId}`, {
@@ -86,6 +102,14 @@ export default function ManageUsers() {
                     <option>APPROVED</option>
                     <option>REJECTED</option>
                 </select>
+              </td>
+              <td>
+                <button 
+                  onClick={() => deleteUser(user.userId)}
+                  className="bg-red-100 text-red-600 px-3 py-1 rounded hover:bg-red-200 transition ml-2"
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           )}
