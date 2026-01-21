@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import {useSearchParams} from 'next/navigation';
 import apiRequest from '@/lib/api'
 import CreateTicketModal from "@/components/CreateTicketModal";
 
@@ -31,6 +32,14 @@ export default function CustomerDashboard() {
     }
     fetchMyTickets();
   }, [])
+
+  //Connection the Create Ticket button to the CreateTicketModal by using URL query parameters
+  const searchParams = useSearchParams();
+  useEffect(() =>{
+    if(searchParams.get('create') === 'true'){
+      setIsModalOpen(true);
+    }
+  }, [searchParams]);
 
   return (
     <div className="p-6">

@@ -28,8 +28,8 @@ export default function CreateTicketModal({isOpen, onClose, onRefresh}){
     }
 
     return (
-        <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
-            <div className=" p-8 rounded-lg w-full max-w-md shadow-xl">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+            <div className="bg-white p-8 rounded-lg w-full max-w-md shadow-xl">
                 <h2 className="text-2xl font-bold mb-4">Raise New Ticket</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">

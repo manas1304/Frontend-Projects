@@ -27,16 +27,16 @@ export default function Sidebar(){
         customer: [
             {name: 'Dashboard', path: '/customer'},
             {name: 'My Tickets', path: '/customer/tickets'},
-            {name: 'Create Ticket', path: '/customer/create'}
+            {name: 'Create Ticket', path: '/customer?create=true'}
         ]
     }
 
     const links = navLinks[role] || [];
 
     return (
-        <aside>
-            <div>CRM Pro</div>
-            <nav>
+        <aside className="w-64 bg-slate-800 text-white flex flex-col">
+            <div className="p-6 text-2xl font-bold border-b border-slate-800">CRM Pro</div>
+            <nav className="flex-1 p-4">
                 {
                     links.map((link) =>(
                         <Link
