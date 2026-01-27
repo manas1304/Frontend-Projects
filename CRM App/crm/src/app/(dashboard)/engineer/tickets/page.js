@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import apiRequest from "@/lib/api";
-import TicketDetailModal from "@/components/TicketDetailsModal";
 
 export default function AssignedTickets() {
   const [tickets, setTickets] = useState([]);
@@ -76,12 +75,6 @@ export default function AssignedTickets() {
           ))}
         </tbody>
       </table>
-      {/**New Modal Component */}
-      <TicketDetailModal
-        isOpen={isViewModalOpen}
-        onClose={() => setIsViewModalOpen(false)}
-        ticket={selectedTicket}
-      />
     </div>
   );
 }

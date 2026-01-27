@@ -1,10 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
 import apiRequest from "@/lib/api";
+import TicketDetailsModal from '@/components/TicketDetailsModal'
 
 export default function AdminTickets() {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // New State for Discussion Modal
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchTickets() {
@@ -20,19 +25,28 @@ export default function AdminTickets() {
     fetchTickets();
   }, []); // Empty dependency array means runs only once on the mount phase.
 
-  async function updateTicket(ticketId, updatedData){
-    try{
-      await apiRequest(`/tickets/${ticketId}`,{
-        method: 'PUT',
-        body: updatedData
-      })
+  async function updateTicket(ticketId, updatedData) {
+    try {
+      await apiRequest(`/tickets/${ticketId}`, {
+        method: "PUT",
+        body: updatedData,
+      });
       // Update local state to see changes instantly
-      setTickets(prev => prev.map(t => t._id === ticketId? {...t, ...updatedData}: t))
-      alert("Ticket Updated")
-    }catch(err){
-        console.log("Error while updating the ticket", err);
-        alert("Update Failed")
+      setTickets((prev) =>
+        prev.map((t) => (t._id === ticketId ? { ...t, ...updatedData } : t)),
+      );
+      alert("Ticket Updated");
+    } catch (err) {
+      console.log("Error while updating the ticket", err);
+      alert("Update Failed");
     }
+  }
+
+  // Open Modal Handler
+  function handleViewTicket(ticket) {
+    console.log("Comments section required by the user", ticket._id);
+    setSelectedTicket(ticket);
+    setIsViewModalOpen(true);
   }
 
   if (loading) return <div>Loading Tickets...</div>;
@@ -48,6 +62,7 @@ export default function AdminTickets() {
             <th className="p-3 font-semibold text-gray-600">Assignee</th>
             <th className="p-3 font-semibold text-gray-600">Status</th>
             <th className="p-3 font-semibold text-gray-600">Priority</th>
+            <th className="p-3 font-semibold text-gray-600">View</th>
           </tr>
         </thead>
         <tbody>
@@ -57,8 +72,10 @@ export default function AdminTickets() {
               <td className="p-3 text-gray-600">{ticket.reporter}</td>
               <td className="p-3 text-gray-600">
                 <select
-                  value={ticket.assignee || ''}
-                  onChange={(e) => updateTicket(ticket._id, {assignee: e.target.value})}
+                  value={ticket.assignee || ""}
+                  onChange={(e) =>
+                    updateTicket(ticket._id, { assignee: e.target.value })
+                  }
                   className="border rounded p-1 text-sm"
                 >
                   <option>Unassigned</option>
@@ -73,18 +90,33 @@ export default function AdminTickets() {
                     ticket.status === "OPEN"
                       ? "bg-blue-100 text-blue-700"
                       : ticket.status === "CLOSED"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-yellow-100 text-yellow-700"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-yellow-100 text-yellow-700"
                   }`}
                 >
                   {ticket.status}
                 </span>
               </td>
               <td className="p-3">{ticket.ticketPriority}</td>
+              {/* NEW CELL WITH EYE BUTTON */}
+              <td className="p-3 text-center">
+                <button
+                  onClick={() => handleViewTicket(ticket)}
+                  className="text-blue-600 hover:text-blue-800 text-xl"
+                >
+                  👁️
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {/**New Modal Component */}
+      <TicketDetailsModal
+        isOpen={isViewModalOpen}
+        onClose={() => setIsViewModalOpen(false)}
+        ticket={selectedTicket}
+      />
     </div>
   );
 }

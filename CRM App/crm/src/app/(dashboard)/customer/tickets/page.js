@@ -1,10 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
 import apiRequest from "@/lib/api";
+import TicketDetailsModal from '@/components/TicketDetailsModal'
 
 export default function MyTickets() {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // New State for Discussion Modal
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
   useEffect(() => {
     async function getMyTickets() {
@@ -22,7 +27,17 @@ export default function MyTickets() {
     getMyTickets();
   }, []);
 
-  if (loading) return <p className="p-6 text-gray-500 text-center">Loading your History</p>;
+  // Open Modal Handler
+  function handleViewTicket(ticket) {
+    console.log("Comments section required by the user", ticket._id);
+    setSelectedTicket(ticket);
+    setIsViewModalOpen(true);
+  }
+
+  if (loading)
+    return (
+      <p className="p-6 text-gray-500 text-center">Loading your History</p>
+    );
 
   return (
     <div className="p-6">
@@ -35,6 +50,7 @@ export default function MyTickets() {
               <th className="p-4 font-semibold text-gray-700">Status</th>
               <th className="p-4 font-semibold text-gray-700">Priority</th>
               <th className="p-4 font-semibold text-gray-700">Assignee</th>
+              <th className="p-4 font-semibold">View</th>
             </tr>
           </thead>
           <tbody>
@@ -55,13 +71,32 @@ export default function MyTickets() {
                   </span>
                 </td>
                 <td className="p-4 text-gray-600">P{t.ticketPriority}</td>
-                <td className="p-4 text-gray-500 italic">{t.assignee || "Waiting for Assignment"}</td>
+                <td className="p-4 text-gray-500 italic">
+                  {t.assignee || "Waiting for Assignment"}
+                </td>
+                {/* NEW CELL WITH EYE BUTTON */}
+                <td className="p-3 text-center">
+                  <button
+                    onClick={() => handleViewTicket(t)}
+                    className="text-blue-600 hover:text-blue-800 text-xl"
+                  >
+                    👁️
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
-        {tickets.length === 0 && <p className="p-10 text-center text-gray-400">No tickets found.</p>}
+        {tickets.length === 0 && (
+          <p className="p-10 text-center text-gray-400">No tickets found.</p>
+        )}
       </div>
+      {/**New Modal Component */}
+      <TicketDetailsModal
+        isOpen={isViewModalOpen}
+        onClose={() => setIsViewModalOpen(false)}
+        ticket={selectedTicket}
+      />
     </div>
   );
 }
