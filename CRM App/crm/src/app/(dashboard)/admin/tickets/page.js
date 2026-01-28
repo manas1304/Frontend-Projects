@@ -11,8 +11,17 @@ export default function AdminTickets() {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
-  useEffect(() => {
-    async function fetchTickets() {
+  const [engineers, setEngineers] = useState([]);
+  useEffect(() =>{
+    async function fetchEngineers(){
+      const allUsers = await apiRequest('/users', {method: 'GET'});
+      // Filtering only engineers for this with status = approved
+      setEngineers(allUsers.filter(u => u.userType ==='ENGINEER' && u.userStatus === 'APPROVED'));
+    }
+    fetchEngineers();
+  }, []); // Runs once only on the mount phase
+
+  async function fetchTickets() {
       try {
         const data = await apiRequest("/tickets", { method: "GET" });
         setTickets(data);
@@ -22,8 +31,26 @@ export default function AdminTickets() {
         setLoading(false);
       }
     }
+
+  useEffect(() => {
     fetchTickets();
   }, []); // Empty dependency array means runs only once on the mount phase.
+
+
+  async function handleAssign(ticketId, engineerId){
+    try{
+      console.log(`Updating ticket ${ticketId} with assignee ${engineerId}`);
+      await apiRequest(`/tickets/${ticketId}`, {
+        method: "PUT",
+        body: JSON.stringify({assignee: engineerId})
+      })
+      alert(`Ticket assigned to ${engineerId}`);
+      fetchTickets();
+    }catch(err){
+      console.log("Failed to Assign", err);
+    }
+  }
+
 
   async function updateTicket(ticketId, updatedData) {
     try {
@@ -73,15 +100,15 @@ export default function AdminTickets() {
               <td className="p-3 text-gray-600">
                 <select
                   value={ticket.assignee || ""}
-                  onChange={(e) =>
-                    updateTicket(ticket._id, { assignee: e.target.value })
-                  }
+                  onChange={(e) => handleAssign(ticket._id, e.target.value)}
                   className="border rounded p-1 text-sm"
                 >
-                  <option>Unassigned</option>
-                  {/* We would map your engineers here later */}
-                  <option>Eng 1</option>
-                  <option>Eng 2</option>
+                  <option value="Unassigned">Unassigned</option>
+                  {
+                    engineers.map((eng) => (
+                      <option key={eng.userId} value={eng.userId}>{eng.name}({eng.userId})</option>
+                    ))
+                  }
                 </select>
               </td>
               <td className="p-3">
