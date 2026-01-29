@@ -13,7 +13,7 @@ export default function ProfilePage(){
         // Hydrate state from localStorage on component mount
         setProfile((prev) =>({
             ...prev,
-            userId: localStorage.getItem('useId') || "",
+            userId: localStorage.getItem('userId') || "",
             name: localStorage.getItem('name') || ""
         }))
     }, [])
