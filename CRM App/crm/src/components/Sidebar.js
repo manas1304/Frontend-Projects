@@ -18,16 +18,19 @@ export default function Sidebar(){
         admin: [
             {name: 'Dashboard', path: '/admin'},
             {name: 'Manage Users', path: '/admin/users'},
-            {name: 'All Tickets', path: '/admin/tickets'}
+            {name: 'All Tickets', path: '/admin/tickets'},
+            {name: 'Profile', path: '/profile'}
         ],
         engineer: [
             {name: 'Dashboard', path: '/engineer'},
-            {name: 'Assigned Tickets', path: '/engineer/tickets'}
+            {name: 'Assigned Tickets', path: '/engineer/tickets'},
+            {name: 'Profile', path: '/profile'}
         ],
         customer: [
             {name: 'Dashboard', path: '/customer'},
             {name: 'My Tickets', path: '/customer/tickets'},
-            {name: 'Create Ticket', path: '/customer?create=true'}
+            {name: 'Create Ticket', path: '/customer?create=true'},
+            {name: 'Profile', path: '/profile'}
         ]
     }
 

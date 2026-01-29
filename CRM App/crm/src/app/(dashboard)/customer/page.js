@@ -3,14 +3,16 @@ import { useState, useEffect } from "react";
 import {useSearchParams} from 'next/navigation';
 import apiRequest from '@/lib/api'
 import CreateTicketModal from "@/components/CreateTicketModal";
+import Loading from '@/components/Loading'
 
 export default function CustomerDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [stats, setStats] = useState({open: 0, resolved: 0});
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() =>{
     async function fetchMyTickets(){
+        setIsLoading(true)
         try{
             // Fetching all tickets 
             const allTickets = await apiRequest('/tickets', {method: 'GET'});
@@ -27,7 +29,7 @@ export default function CustomerDashboard() {
         }catch(err){
             console.log("Failed to fetch status", err)
         }finally{
-            setLoading(false)
+            setIsLoading(false);
         }
     }
     fetchMyTickets();
@@ -40,6 +42,9 @@ export default function CustomerDashboard() {
       setIsModalOpen(true);
     }
   }, [searchParams]);
+
+  if (isLoading) return <Loading />
+      
 
   return (
     <div className="p-6">
@@ -56,11 +61,11 @@ export default function CustomerDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-500">
           <p className="text-sm text-gray-500 uppercase">My Open Tickets</p>
-          <h2 className="text-3xl font-bold">{loading ? '...' : stats.open}</h2>
+          <h2 className="text-3xl font-bold">{isLoading ? '...' : stats.open}</h2>
         </div>
         <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-green-500">
           <p className="text-sm text-gray-500 uppercase">Resolved</p>
-          <h2 className="text-3xl font-bold">{loading ? '...' : stats.resolved}</h2>
+          <h2 className="text-3xl font-bold">{isLoading ? '...' : stats.resolved}</h2>
         </div>
       </div>
       {/*The Modal Component */}

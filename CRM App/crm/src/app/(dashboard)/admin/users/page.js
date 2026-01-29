@@ -1,13 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
 import apiRequest from "@/lib/api";
+import Loading from '@/components/Loading'
 
 export default function ManageUsers() {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchUsers() {
+      setIsLoading(true)
       try {
         const data = await apiRequest("/users", { method: "GET" });
         console.log(data);
@@ -15,7 +17,7 @@ export default function ManageUsers() {
       } catch (err) {
         console.log("Error while fetching data", err);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     }
     fetchUsers();
@@ -56,6 +58,8 @@ export default function ManageUsers() {
         alert('Failed to update the user')
     }
   }
+
+  if (isLoading) return <Loading />
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border">

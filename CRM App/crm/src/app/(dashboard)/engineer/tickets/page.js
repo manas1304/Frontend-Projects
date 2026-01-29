@@ -1,14 +1,16 @@
 "use client";
 import { useState, useEffect } from "react";
 import apiRequest from "@/lib/api";
+import Loading from '@/components/Loading'
 
 export default function AssignedTickets() {
   const [tickets, setTickets] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchMyTickets() {
+      setIsLoading(true)
       try {
         const allTickets = await apiRequest("/tickets", { method: "GET" });
         const myId = localStorage.getItem("userId");
@@ -17,7 +19,7 @@ export default function AssignedTickets() {
       } catch (err) {
         console.log("Failed to fetch tickets");
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     }
     fetchMyTickets();
@@ -30,7 +32,7 @@ export default function AssignedTickets() {
   );
   // During re-render filtercode runs again as soon the the searchTerm state variable is updated from the input.
 
-  if (loading) return <div className="p-6">Loading your tasks</div>;
+  if (isLoading) return <Loading />
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border min-h-screen">

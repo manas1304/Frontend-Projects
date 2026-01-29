@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import apiRequest from '@/lib/api'
+import Loading from '@/components/Loading'
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -9,9 +10,12 @@ export default function AdminDashboard() {
     closed: 0,
     blocked: 0,
   });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() =>{
+    
     async function fetchStats(){
+      setIsLoading(true)
       try{
         const allTickets = await apiRequest('/tickets', {method: 'GET'});
 
@@ -26,10 +30,14 @@ export default function AdminDashboard() {
       }catch(err){
         console.log("Failed to Fetch Stats");
         alert("Failed to Fetch Stats");
+      }finally{
+        setIsLoading(false)
       }
     }
     fetchStats();
-  })
+  }, [])
+
+  if (isLoading) return <Loading />
 
   return (
     <div>

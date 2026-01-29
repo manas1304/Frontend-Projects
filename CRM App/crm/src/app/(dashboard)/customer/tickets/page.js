@@ -2,10 +2,11 @@
 import { useState, useEffect } from "react";
 import apiRequest from "@/lib/api";
 import TicketDetailsModal from '@/components/TicketDetailsModal'
+import Loading from '@/components/Loading'
 
 export default function MyTickets() {
   const [tickets, setTickets] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   // New State for Discussion Modal
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -13,6 +14,7 @@ export default function MyTickets() {
 
   useEffect(() => {
     async function getMyTickets() {
+      setIsLoading(true)
       try {
         const allTickets = await apiRequest("/tickets", { method: "GET" });
         const myId = localStorage.getItem("userId");
@@ -21,7 +23,7 @@ export default function MyTickets() {
       } catch (err) {
         console.log("Failed to get your tickets", err);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     }
     getMyTickets();
@@ -34,9 +36,9 @@ export default function MyTickets() {
     setIsViewModalOpen(true);
   }
 
-  if (loading)
+  if (isLoading)
     return (
-      <p className="p-6 text-gray-500 text-center">Loading your History</p>
+      <Loading />
     );
 
   return (

@@ -2,10 +2,11 @@
 import { useState, useEffect } from "react";
 import apiRequest from "@/lib/api";
 import TicketDetailsModal from '@/components/TicketDetailsModal'
+import Loading from '@/components/Loading'
 
 export default function AdminTickets() {
   const [tickets, setTickets] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   // New State for Discussion Modal
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -22,13 +23,14 @@ export default function AdminTickets() {
   }, []); // Runs once only on the mount phase
 
   async function fetchTickets() {
+      setIsLoading(true); // Show spinner before the request
       try {
         const data = await apiRequest("/tickets", { method: "GET" });
         setTickets(data);
       } catch (err) {
         console.log("Error occured while fetching tickets", err);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     }
 
@@ -76,7 +78,7 @@ export default function AdminTickets() {
     setIsViewModalOpen(true);
   }
 
-  if (loading) return <div>Loading Tickets...</div>;
+  if (isLoading) return <Loading />
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border">

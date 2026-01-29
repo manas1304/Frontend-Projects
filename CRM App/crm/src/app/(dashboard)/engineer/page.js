@@ -2,10 +2,11 @@
 import { useState, useEffect } from "react";
 import apiRequest from "@/lib/api";
 import TicketDetailsModal from '@/components/TicketDetailsModal'
+import Loading from '@/components/Loading'
 
 export default function EngineerDashboard() {
   const [tickets, setTickets] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   // New State for Discussion Modal
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -13,6 +14,7 @@ export default function EngineerDashboard() {
 
   useEffect(() => {
     async function fetchAssignedTickets() {
+      setIsLoading(true)
       try {
         const allTickets = await apiRequest("/tickets", { method: "GET" });
         const myId = localStorage.getItem("userId");
@@ -22,7 +24,7 @@ export default function EngineerDashboard() {
       } catch (err) {
         console.log("Failed to fetch assigned tickets", err);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     }
 
@@ -51,7 +53,7 @@ export default function EngineerDashboard() {
     setIsViewModalOpen(true);
   }
 
-  if (loading) return <div className="p-6">Loading Assigned Tasks...</div>;
+  if (isLoading) return <Loading />
 
   return (
     <div className="p-6">
