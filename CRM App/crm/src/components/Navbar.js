@@ -1,6 +1,7 @@
 "use client"
 import {useState, useEffect} from 'react';
 import {useRouter} from 'next/navigation';
+import NotificationBell from './NotificationBell';
 
 export default function Navbar(){
     const router = useRouter();
@@ -24,12 +25,15 @@ export default function Navbar(){
             <div className="text-gray-500 font-medium">
                 Welcome back, <span className="text-blue-600 font-bold">{userName}</span>
             </div>
-            <button
-                onClick={handleLogout}
-                className="bg-red-50 text-red-600 px-4 py-2 rounded-md hover:bg-red-100 transition font-medium"
-            >
-                Logout
-            </button>
+            <div className="flex items-center space-x-4"> 
+                <NotificationBell />
+                <button
+                    onClick={handleLogout}
+                    className="bg-red-50 text-red-600 px-4 py-2 rounded-md hover:bg-red-100 transition font-medium"
+                >
+                    Logout
+                </button>
+            </div>
         </nav>
     )
 }
