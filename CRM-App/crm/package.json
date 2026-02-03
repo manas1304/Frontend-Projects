@@ -12,15 +12,15 @@
     "@tailwindcss/postcss": "^4.1.18",
     "clsx": "^2.1.1",
     "lucide-react": "^0.468.0",
-    "next": "^16.1.6",
+    "next": "^15.2.0",
+    "postcss": "^8.4.49",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "tailwind-merge": "^2.5.5"
+    "tailwind-merge": "^2.5.5",
+    "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
     "eslint": "^9",
-    "eslint-config-next": "15.1.0",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^4.1.18"
+    "eslint-config-next": "15.1.0"
   }
 }
