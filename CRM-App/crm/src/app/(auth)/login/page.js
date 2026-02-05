@@ -41,12 +41,12 @@ export default function LoginPage(){
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-background">
             <form
                 onSubmit={handleSubmit}
-                className="p-8 bg-white shadow-md rounded-lg w-96"
+                className="p-8 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-md rounded-lg w-96"
             >
-                <h1 className="text-2xl font-bold mb-6 text-center">CRM Login</h1>
+                <h1 className="text-2xl font-bold mb-6 text-center text-foreground">CRM Login</h1>
                 {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
                 <input 
@@ -54,14 +54,14 @@ export default function LoginPage(){
                     placeholder="User Id"
                     required
                     onChange={(e) => setFormData({...formData, userId: e.target.value})}
-                    className="w-full p-2 mb-4 border rounded"
+                    className="w-full p-2 mb-4 border rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700"
                 />
                 <input 
                     type="password"
                     placeholder="Password"
                     required
                     onChange={(e) => setFormData({...formData, password: e.target.value})}
-                    className="w-full p-2 mb-4 border rounded"
+                    className="w-full p-2 mb-4 border rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700"
                 />
 
                 <button
